@@ -117,6 +117,7 @@ int WinMain() {
 	}
 
 	glfwMakeContextCurrent(window);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); // hide the cursor
 
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
