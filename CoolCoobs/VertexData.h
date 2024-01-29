@@ -1,6 +1,8 @@
 #pragma once
 #include "Constants.h"
 
+#include <glm/glm.hpp>
+
 float x_vertex = 0.5f, y_vertex = 0.5f;
 
 float vertexPositionsAndColors[] = {
@@ -23,7 +25,7 @@ float vertexPositionsAndColors[] = {
 
 	// right face
 	x_vertex, y_vertex, 0.0, COLOR_ROYAL_BLUE[0], COLOR_ROYAL_BLUE[1], COLOR_ROYAL_BLUE[2],
-	x_vertex, -y_vertex, -1.0, COLOR_ROYAL_BLUE[0], COLOR_ROYAL_BLUE[1], COLOR_ROYAL_BLUE[2],
+	x_vertex, y_vertex, -1.0, COLOR_ROYAL_BLUE[0], COLOR_ROYAL_BLUE[1], COLOR_ROYAL_BLUE[2],
 	0.5, 0.0, -0.5, COLOR_SKY_BLUE[0], COLOR_SKY_BLUE[1], COLOR_SKY_BLUE[2],
 
 	x_vertex, y_vertex, -1.0, COLOR_ROYAL_BLUE[0], COLOR_ROYAL_BLUE[1], COLOR_ROYAL_BLUE[2],
