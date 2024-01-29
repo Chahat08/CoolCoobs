@@ -19,7 +19,7 @@ private:
 	void checkProgramLinkingErrors();
 public:
 	// constructor
-	Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+	Shader(const std::string& vertexShader, const std::string& fragmentShader, bool filePathProvided=true);
 
 	// use shaderprogram
 	void use();

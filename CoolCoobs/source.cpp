@@ -73,7 +73,26 @@ void createViewMatrices(Shader& shader) {
 	shader.setUniformMatrix4float("view", view);
 }
 
-int main() {
+const char* vertexShaderSource =
+"#version 330 core\n"
+"layout(location = 0) in vec3 positionData;\n"
+"layout(location = 1) in vec3 colorData;\n"
+"uniform mat4 model, view, projection;\n"
+"out vec3 fragmentColor;\n"
+"void main() {\n"
+"	gl_Position = projection * view * model * vec4(positionData, 1.0f);\n"
+"	fragmentColor = colorData;\n"
+"}\0";
+
+const char* fragmentShaderSource =
+"#version 330 core\n"
+"in vec3 fragmentColor;\n"
+"out vec4 fragColor;\n"
+"void main() {\n"
+"	fragColor = vec4(fragmentColor, 1.0f);\n"
+"}\0";
+
+int WinMain() {
 	if (!glfwInit()) {
 		std::cerr << "Failed to initialize GLFW" << std::endl;
 		return -1;
@@ -111,7 +130,7 @@ int main() {
 	glfwSetKeyCallback(window, key_callback);
 
 	// creating shaders
-	Shader shader("VertexShaderSource.vert", "FragmentShaderSource.frag");
+	Shader shader(vertexShaderSource, fragmentShaderSource, false);
 
 	// creating and sending vertex data
 	unsigned int VBO, VAO;

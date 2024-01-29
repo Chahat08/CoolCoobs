@@ -34,43 +34,51 @@ unsigned int Shader::createShader(const std::string& shaderSource, char type) {
 	return shader;
 }
 
-Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) {
-
-	std::fstream vertexFileStream(vertexShaderPath, std::ios::in);
+Shader::Shader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource, bool filePathProvided) {
 
 	unsigned int vertexShader = 0, fragmentShader = 0;
 
-	if (vertexFileStream.is_open()) {
-		const std::string vertexShaderSource(
-			(std::istreambuf_iterator<char>(vertexFileStream)),
-			std::istreambuf_iterator<char>()
-		);
+	if (filePathProvided) {
+		std::fstream vertexFileStream(vertexShaderSource, std::ios::in);
 
+		if (vertexFileStream.is_open()) {
+			const std::string vertexShaderSourceString(
+				(std::istreambuf_iterator<char>(vertexFileStream)),
+				std::istreambuf_iterator<char>()
+			);
+
+			vertexShader = createShader(vertexShaderSourceString, 'v');
+
+		}
+		else {
+			std::cerr << "Error in reading vertex shader source: " << vertexShaderSource << std::endl;
+		}
+
+		checkShaderCompilationErrors(vertexShader);
+
+		std::fstream fragmentFileStream(fragmentShaderSource, std::ios::in);
+
+		if (fragmentFileStream.is_open()) {
+			const std::string fragmentShaderSourceString(
+				(std::istreambuf_iterator<char>(fragmentFileStream)),
+				std::istreambuf_iterator<char>()
+			);
+
+			fragmentShader = createShader(fragmentShaderSourceString, 'f');
+
+		}
+		else {
+			std::cerr << "Failed to open fragment shader source: " << fragmentShaderSource << std::endl;
+		}
+
+		checkShaderCompilationErrors(fragmentShader);
+	}
+	else {
 		vertexShader = createShader(vertexShaderSource, 'v');
-
-	}
-	else {
-		std::cerr << "Error in reading vertex shader source: " << vertexShaderPath << std::endl;
-	}
-
-	checkShaderCompilationErrors(vertexShader);
-
-	std::fstream fragmentFileStream(fragmentShaderPath, std::ios::in);
-
-	if (fragmentFileStream.is_open()) {
-		const std::string fragmentShaderSource(
-			(std::istreambuf_iterator<char>(fragmentFileStream)),
-			std::istreambuf_iterator<char>()
-		);
-
+		checkShaderCompilationErrors(vertexShader);
 		fragmentShader = createShader(fragmentShaderSource, 'f');
-
+		checkShaderCompilationErrors(fragmentShader);
 	}
-	else {
-		std::cerr << "Failed to open fragment shader source: " << fragmentShaderPath << std::endl;
-	}
-
-	checkShaderCompilationErrors(fragmentShader);
 
 	this->ID = glCreateProgram();
 	glAttachShader(ID, vertexShader);
@@ -82,6 +90,8 @@ Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentS
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 }
+
+
 
 void Shader::use() {
 	glUseProgram(this->ID);
