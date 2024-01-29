@@ -106,9 +106,9 @@ int main() {
 	}
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_resize_callback);
-	//glfwSetMouseButtonCallback(window, mouse_button_callback);
-	//glfwSetCursorPosCallback(window, cursor_position_callback);
-	//glfwSetKeyCallback(window, key_callback);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetCursorPosCallback(window, cursor_position_callback);
+	glfwSetKeyCallback(window, key_callback);
 
 	// creating shaders
 	Shader shader("VertexShaderSource.vert", "FragmentShaderSource.frag");
